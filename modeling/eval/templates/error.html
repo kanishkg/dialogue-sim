@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Error - Turing Test{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>⚠️ Error</h1>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <p style="color: #ef4444; margin-bottom: 20px;">{{ message }}</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Go Back</a>
+    </div>
+</div>
+{% endblock %}

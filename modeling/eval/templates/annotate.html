@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Annotate - Turing Test{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>🤖 Human Turing Test</h1>
+        <p class="subtitle">Welcome, {{ annotator }}</p>
+    </div>
+    
+    <div class="card">
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ progress.percentage }}%"></div>
+        </div>
+        <p class="progress-text">{{ progress.completed }} / {{ progress.total }} completed ({{ progress.percentage }}%)</p>
+    </div>
+    
+    <div class="card" id="annotation-card">
+        <p class="example-counter">Example #{{ example_index + 1 }}</p>
+        
+        <h3 style="margin-bottom: 15px; color: #f4f4f5;">Conversation Context:</h3>
+        <div class="context-box">
+            {% for item in formatted_context %}
+            <div class="utterance speaker-{{ (loop.index0 % 2) + 1 }}">
+                <div class="speaker-label">{{ item.speaker }}</div>
+                {{ item.text }}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <p class="question">Which response is more natural and appropriate?</p>
+        
+        <div class="response-box response-a" onclick="selectResponse('A')" id="response-a">
+            <div class="response-label">Response A</div>
+            <p>{{ example.response_a }}</p>
+        </div>
+        
+        <div class="response-box response-b" onclick="selectResponse('B')" id="response-b">
+            <div class="response-label">Response B</div>
+            <p>{{ example.response_b }}</p>
+        </div>
+
+        <div class="response-box response-tie" onclick="selectResponse('Tie')" id="response-tie">
+            <div class="response-label">Tie</div>
+            <p>Both responses are equally good</p>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" id="submit-btn" onclick="submitChoice()" disabled>
+                Submit Choice
+            </button>
+        </div>
+    </div>
+    
+    <div class="nav-links">
+        <a href="{{ url_for('stats') }}">View Statistics</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</div>
+
+<div class="feedback success" id="feedback" style="display: none;">
+    Saved! Loading next...
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let selectedChoice = null;
+    const exampleIndex = {{ example_index }};
+    
+    function selectResponse(choice) {
+        selectedChoice = choice;
+
+        document.getElementById('response-a').classList.remove('selected');
+        document.getElementById('response-b').classList.remove('selected');
+        document.getElementById('response-tie').classList.remove('selected');
+        document.getElementById('response-' + choice.toLowerCase()).classList.add('selected');
+        document.getElementById('submit-btn').disabled = false;
+    }
+    
+    async function submitChoice() {
+        if (!selectedChoice) return;
+        
+        const card = document.getElementById('annotation-card');
+        const btn = document.getElementById('submit-btn');
+        
+        card.classList.add('loading');
+        btn.disabled = true;
+        btn.textContent = 'Saving...';
+        
+        try {
+            const response = await fetch('{{ url_for("submit") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    example_index: exampleIndex,
+                    choice: selectedChoice
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                const feedback = document.getElementById('feedback');
+                feedback.style.display = 'block';
+                
+                setTimeout(() => {
+                    if (data.is_complete) {
+                        window.location.href = '{{ url_for("stats") }}';
+                    } else {
+                        window.location.reload();
+                    }
+                }, 500);
+            } else {
+                alert('Error: ' + data.error);
+                card.classList.remove('loading');
+                btn.disabled = false;
+                btn.textContent = 'Submit Choice';
+            }
+        } catch (error) {
+            alert('Network error. Please try again.');
+            card.classList.remove('loading');
+            btn.disabled = false;
+            btn.textContent = 'Submit Choice';
+        }
+    }
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'a' || e.key === 'A' || e.key === '1') {
+            selectResponse('A');
+        } else if (e.key === 'b' || e.key === 'B' || e.key === '2') {
+            selectResponse('B');
+        } else if (e.key === 't' || e.key === 'T' || e.key === '3') {
+            selectResponse('Tie');
+        } else if (e.key === 'Enter' && selectedChoice) {
+            submitChoice();
+        }
+    });
+</script>
+{% endblock %}

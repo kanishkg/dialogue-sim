@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Statistics - Turing Test{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>📊 Your Statistics</h1>
+        <p class="subtitle">{{ annotator }}'s annotation progress</p>
+    </div>
+    
+    <div class="card">
+        <h3 style="margin-bottom: 15px;">Overall Progress</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ progress.percentage }}%"></div>
+        </div>
+        <p class="progress-text">{{ progress.completed }} / {{ progress.total }} completed ({{ progress.percentage }}%)</p>
+    </div>
+    
+    <div class="card">
+        <h3 style="margin-bottom: 20px;">Overall Results (ties count as 0.5 each)</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ total_model_wins }}</div>
+                <div class="stat-label">Model Score ({{ overall_model_pct }}%)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ total_ties }}</div>
+                <div class="stat-label">Ties</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ total_gt_wins }}</div>
+                <div class="stat-label">Human Score ({{ overall_gt_pct }}%)</div>
+            </div>
+        </div>
+
+        {% if total_answered > 0 %}
+        <div style="margin-top: 20px;">
+            <div style="display: flex; height: 30px; border-radius: 8px; overflow: hidden;">
+                <div style="width: {{ overall_model_pct }}%; background: linear-gradient(90deg, #667eea, #764ba2);"></div>
+                <div style="width: {{ overall_gt_pct }}%; background: linear-gradient(90deg, #3b82f6, #06b6d4);"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.85rem; color: #a1a1aa;">
+                <span>Model: {{ overall_model_pct }}%</span>
+                <span>Human: {{ overall_gt_pct }}%</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="card">
+        <h3 style="margin-bottom: 20px;">Results by Model/File</h3>
+        {% for file_name, file_stats in stats_by_file.items() %}
+        <div class="file-stats-card">
+            <h4>{{ file_name }}</h4>
+            <div class="file-stats-row">
+                <span class="file-stats-label">Progress</span>
+                <span class="file-stats-value">{{ file_stats.total }} / {{ file_stats.target }} ({{ file_stats.progress_pct }}%)</span>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <div class="progress-bar" style="height: 8px; margin: 5px 0;">
+                    <div class="progress-fill" style="width: {{ file_stats.progress_pct }}%"></div>
+                </div>
+            </div>
+            <div class="file-stats-row">
+                <span class="file-stats-label">Model Score</span>
+                <span class="file-stats-value">{{ file_stats.model_wins }} ({{ file_stats.model_pct }}%)</span>
+            </div>
+            <div class="file-stats-row">
+                <span class="file-stats-label">Human Score</span>
+                <span class="file-stats-value">{{ file_stats.gt_wins }} ({{ file_stats.gt_pct }}%)</span>
+            </div>
+            <div class="file-stats-row">
+                <span class="file-stats-label">Ties</span>
+                <span class="file-stats-value">{{ file_stats.ties }}</span>
+            </div>
+            {% if file_stats.total > 0 %}
+            <div style="margin-top: 10px;">
+                <div style="display: flex; height: 16px; border-radius: 4px; overflow: hidden;">
+                    <div style="width: {{ file_stats.model_pct }}%; background: linear-gradient(90deg, #667eea, #764ba2);"></div>
+                    <div style="width: {{ file_stats.gt_pct }}%; background: linear-gradient(90deg, #3b82f6, #06b6d4);"></div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="actions">
+        {% if progress.completed < progress.total %}
+        <a href="{{ url_for('annotate') }}" class="btn btn-primary">Continue Annotating</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+    </div>
+</div>
+{% endblock %}

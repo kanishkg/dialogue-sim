@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Complete - Turing Test{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>🎉 All Done!</h1>
+        <p class="subtitle">Thank you, {{ annotator }}!</p>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <h2 style="margin-bottom: 20px;">You've completed all examples!</h2>
+        <p style="color: #a1a1aa; margin-bottom: 20px;">
+            Your annotations have been saved to:<br>
+            <code style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 5px;">{{ csv_path }}</code>
+        </p>
+        
+        <div class="actions">
+            <a href="{{ url_for('stats') }}" class="btn btn-primary">View Statistics</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,131 @@
+calibrate_rewards/calibration_generations.jsonl
+dialogue_modelling.egg-info
+sft/checkpoints/
+sft/scripts/eval_base_claude.sh
+utils/__pycache__/prompts.cpython-310.pyc
+# Python
+*__pycache__/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.manifest
+*.spec
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+conda/
+dd_sft/
+sft/results/
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Model Checkpoints & Training Outputs
+checkpoints/
+checkpoint-*/
+*.pt
+*.pth
+*.bin
+*.safetensors
+model_checkpoints/
+/scr/agam/model_checkpoints/
+dialogue_predictor_sft/
+dialogue_predictor_final/
+*.ckpt
+
+# Datasets (if cached locally)
+data/
+datasets/
+*.arrow
+*.parquet
+!calibrate_rewards/calibration_generations.jsonl
+
+# Logs
+logs/
+*.log
+wandb/
+.wandb/
+tensorboard/
+runs/
+lightning_logs/
+
+# Training artifacts
+trainer_state.json
+training_args.bin
+optimizer.pt
+scheduler.pt
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.directory
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Hydra
+outputs/
+multirun/
+.hydra/
+
+# HuggingFace cache
+.cache/
+huggingface/
+transformers_cache/
+
+# Large files
+*.tar
+*.tar.gz
+*.zip
+*.pkl
+*.pickle
+
+# Temporary files
+tmp/
+temp/
+*.tmp

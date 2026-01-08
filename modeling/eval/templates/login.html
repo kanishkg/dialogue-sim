@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Login - Turing Test{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>🤖 Human Turing Test</h1>
+        <p class="subtitle">Help us evaluate AI-generated dialogue</p>
+    </div>
+    
+    <div class="card" style="max-width: 500px; margin: 0 auto;">
+        <h2 style="margin-bottom: 20px; text-align: center;">Welcome, Annotator!</h2>
+        <p style="color: #a1a1aa; margin-bottom: 25px; text-align: center;">
+            Please enter your name to begin or continue your annotation session.
+        </p>
+        
+        <form action="{{ url_for('start') }}" method="POST">
+            <input type="text" name="annotator_name" placeholder="Enter your name" required autofocus>
+            
+            <div style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                <p style="color: #a1a1aa; font-size: 0.9rem; margin-bottom: 10px;">
+                    Evaluating {{ num_files }} model(s){% if num_examples %} ({{ num_examples }} examples each){% endif %}:
+                </p>
+                <div class="file-list">
+                    {% for name in file_names %}
+                    <span class="file-tag">{{ name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                Start Annotating
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

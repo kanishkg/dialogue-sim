@@ -1,0 +1,81 @@
+{
+  "builder_name": "daily_dialog",
+  "citation": "@InProceedings{li2017dailydialog,\n    author = {Li, Yanran and Su, Hui and Shen, Xiaoyu and Li, Wenjie and Cao, Ziqiang and Niu, Shuzi},\n    title = {DailyDialog: A Manually Labelled Multi-turn Dialogue Dataset},\n    booktitle = {Proceedings of The 8th International Joint Conference on Natural Language Processing (IJCNLP 2017)},\n    year = {2017}\n}\n",
+  "config_name": "default",
+  "dataset_name": "daily_dialog",
+  "dataset_size": 8626438,
+  "description": "We develop a high-quality multi-turn dialog dataset, DailyDialog, which is intriguing in several aspects.\nThe language is human-written and less noisy. The dialogues in the dataset reflect our daily communication way\nand cover various topics about our daily life. We also manually label the developed dataset with communication\nintention and emotion information. Then, we evaluate existing approaches on DailyDialog dataset and hope it\nbenefit the research field of dialog systems.\n",
+  "download_checksums": {
+    "http://yanran.li/files/ijcnlp_dailydialog.zip": {
+      "num_bytes": 4475921,
+      "checksum": null
+    }
+  },
+  "download_size": 4475921,
+  "features": {
+    "dialog": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    },
+    "act": {
+      "feature": {
+        "names": [
+          "__dummy__",
+          "inform",
+          "question",
+          "directive",
+          "commissive"
+        ],
+        "_type": "ClassLabel"
+      },
+      "_type": "Sequence"
+    },
+    "emotion": {
+      "feature": {
+        "names": [
+          "no emotion",
+          "anger",
+          "disgust",
+          "fear",
+          "happiness",
+          "sadness",
+          "surprise"
+        ],
+        "_type": "ClassLabel"
+      },
+      "_type": "Sequence"
+    }
+  },
+  "homepage": "http://yanran.li/dailydialog",
+  "license": "",
+  "size_in_bytes": 13102359,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 7296683,
+      "num_examples": 11118,
+      "dataset_name": "daily_dialog"
+    },
+    "validation": {
+      "name": "validation",
+      "num_bytes": 673927,
+      "num_examples": 1000,
+      "dataset_name": "daily_dialog"
+    },
+    "test": {
+      "name": "test",
+      "num_bytes": 655828,
+      "num_examples": 1000,
+      "dataset_name": "daily_dialog"
+    }
+  },
+  "version": {
+    "version_str": "1.0.0",
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  }
+}
